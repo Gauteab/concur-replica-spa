@@ -1,0 +1,14 @@
+resolver: nightly-2022-10-11
+
+packages:
+  - .
+
+extra-deps:
+  - git: https://github.com/Gauteab/concur-replica
+    commit: 242308c2665c052e0a78e0707374c709b85e6c12
+  - git: https://github.com/pkamenarsky/concur.git
+    commit: dc5347b35c79654d58fa95716f425ee7248504fb
+    subdirs:
+      - concur-core
+  - git: https://github.com/pkamenarsky/replica.git
+    commit: 46d2fd3b2c236d573f1d6002eb58cc95b2ba03b9

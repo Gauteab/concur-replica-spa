@@ -1,0 +1,108 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           concur-replica-spa
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/concur-replica-spa#readme>
+homepage:       https://github.com/githubuser/concur-replica-spa#readme
+bug-reports:    https://github.com/githubuser/concur-replica-spa/issues
+author:         Gaute Berge
+maintainer:     gaute.berge@gmail.com
+copyright:      2022 Gaute Berge
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/concur-replica-spa
+
+library
+  exposed-modules:
+      Concur.Replica.Spa
+      Concur.Replica.Spa.Widget
+  other-modules:
+      Paths_concur_replica_spa
+  hs-source-dirs:
+      src
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+      OverloadedRecordDot
+      OverloadedRecordUpdate
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , concur-core
+    , concur-replica
+    , mtl
+    , relude
+    , replica
+    , stm
+    , wai
+    , wai-middleware-static
+    , websockets
+    , wreq
+  default-language: GHC2021
+
+executable concur-replica-spa-exe
+  main-is: Main.hs
+  hs-source-dirs:
+      app
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+      OverloadedRecordDot
+      OverloadedRecordUpdate
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , concur-core
+    , concur-replica
+    , concur-replica-spa
+    , mtl
+    , relude
+    , replica
+    , stm
+    , wai
+    , wai-middleware-static
+    , websockets
+    , wreq
+  default-language: GHC2021
+
+test-suite concur-replica-spa-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_concur_replica_spa
+  hs-source-dirs:
+      test
+  default-extensions:
+      NoImplicitPrelude
+      OverloadedStrings
+      OverloadedRecordDot
+      OverloadedRecordUpdate
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , concur-core
+    , concur-replica
+    , concur-replica-spa
+    , mtl
+    , relude
+    , replica
+    , stm
+    , wai
+    , wai-middleware-static
+    , websockets
+    , wreq
+  default-language: GHC2021
