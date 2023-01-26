@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Concur.Replica.Spa
+      Concur.Replica.Spa.Router
       Concur.Replica.Spa.Widget
   other-modules:
       Paths_concur_replica_spa

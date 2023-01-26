@@ -1,6 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Concur.Replica.Spa.Widget (Env(..), Widget, runWidget, node, useReplicaContext, button, text, callJs, initRoute, consoleLog, nothing, useHistory, link, div, getinitRoute) where
+module Concur.Replica.Spa.Widget (Env(..), Widget, runWidget, node, useReplicaContext, button, text, callJs, consoleLog, nothing, div) where
 
 import Concur.Core qualified as Core
 import Concur.Replica.DOM qualified as DOM
@@ -10,8 +10,6 @@ import Network.Wai.Handler.Replica as Replica
 import Relude hiding (div)
 import Replica.VDOM.Types qualified as Types
 import Control.Concurrent.STM qualified as STM
-import Concur.Replica.DOM.Events (onClick)
-import Data.Text qualified as Text
 
 newtype Widget a = Widget (ReaderT Env (Core.Widget Types.HTML) a)
   deriving (Functor, Applicative, Monad, MonadIO, MonadReader Env, Alternative)
@@ -35,11 +33,6 @@ node tag props children = do
 text :: Text -> Widget a
 text = new . DOM.text
 
-useHistory :: Widget Text
-useHistory = do 
-  chan <- asks envRoute 
-  liftIO $ STM.atomically (STM.readTChan chan)
-
 useReplicaContext :: Widget Context
 useReplicaContext = asks envContext 
 
@@ -48,18 +41,6 @@ callJs code callback = do
   ctx <- useReplicaContext
   cb <- liftIO $ registerCallback ctx callback
   liftIO $ Replica.call ctx cb code
-
-getinitRoute :: Widget Text
-getinitRoute = do
-  routeChan <- asks envRoute
-  callJs "callCallback(arg, window.location.pathname)" $ \path -> 
-    STM.atomically $ STM.writeTChan routeChan $ Text.drop 1 path
-  useHistory
-
-initRoute :: Widget ()
-initRoute = do
-  callJs "callCallback(arg, window.location.pathname)" $
-    \path -> putStrLn ("Hello from " <> path)
 
 consoleLog :: Text -> Widget ()
 consoleLog message =
@@ -78,17 +59,6 @@ div = node "div"
 
 button :: [Props a] -> [Widget a] -> Widget a
 button = node "button"
-
-link :: Text -> Widget ()
-link s = do
-  routeChan <- asks envRoute
-  _ <- node "a" [onClick] [text s]
-  callJs ("window.history.pushState({}, \"\", '" <> s <> "');") $ \(_ :: Text) -> pure ()
-  liftIO . STM.atomically $ STM.writeTChan routeChan s
-
-
-
-
 
 ---- | https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div
 --div :: WidgetConstraints m => [Props a] -> [m a] -> m a

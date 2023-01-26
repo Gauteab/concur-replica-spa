@@ -10,9 +10,8 @@ import Network.Wai.Middleware.Static qualified
 import Network.WebSockets qualified as WebSockets
 import Relude hiding (div)
 import Replica.VDOM qualified as VDOM
-import Control.Concurrent.STM (TChan, atomically)
+import Control.Concurrent.STM (atomically)
 import Control.Concurrent.STM.TChan
-import Data.Text qualified as Text
 
 start :: Widget a -> IO ()
 start widget = do
@@ -26,7 +25,7 @@ start widget = do
     $ \ctx -> do
       chan <- liftIO $ newHistoryChan ctx
       let env = Env ctx chan
-      runWidget env (widget)
+      runWidget env widget
 
 newHistoryChan :: Replica.Context -> IO (TChan Text)
 newHistoryChan ctx = do
