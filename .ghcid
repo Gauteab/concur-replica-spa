@@ -1,0 +1,1 @@
+-c "stack repl --ghci-options -ignore-dot-ghci" -W --restart="./package.yaml" --restart "./stack.yaml" -r
