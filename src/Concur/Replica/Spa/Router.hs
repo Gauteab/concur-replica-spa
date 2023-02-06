@@ -3,6 +3,7 @@ module Concur.Replica.Spa.Router (widget, link) where
 import Concur.Replica.Spa.Widget
 import Relude
 import Concur.Replica.DOM.Events (onClick)
+import Concur.Replica.DOM.Props (href)
 import Data.Text qualified as Text
 import Control.Concurrent.STM qualified as STM
 
@@ -43,9 +44,10 @@ useHistory = do
 link :: Text -> Widget ()
 link s = do
   routeChan <- asks envRoute
-  _ <- node "a" [onClick] [text s]
+  _ <- node "a" [onClick, href $ "javascript:/*" <> s <> "*/;"] [text s]
   callJs ("window.history.pushState({}, \"\", '" <> s <> "');") $ \(_ :: Text) -> pure ()
   liftIO . STM.atomically $ STM.writeTChan routeChan s
+  link s
 
 
 
