@@ -3,15 +3,15 @@
 module Concur.Replica.Spa (start) where
 
 import Concur.Replica qualified
-import Network.Wai.Handler.Replica as Replica
 import Concur.Replica.Spa.Widget
+import Control.Concurrent.STM (atomically)
+import Control.Concurrent.STM.TChan
 import Network.Wai qualified
+import Network.Wai.Handler.Replica as Replica
 import Network.Wai.Middleware.Static qualified
 import Network.WebSockets qualified as WebSockets
 import Relude hiding (div)
 import Replica.VDOM qualified as VDOM
-import Control.Concurrent.STM (atomically)
-import Control.Concurrent.STM.TChan
 
 start :: Widget a -> IO ()
 start widget = do
