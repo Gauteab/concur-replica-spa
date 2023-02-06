@@ -7,6 +7,7 @@ import Concur.Replica.DOM qualified as DOM
 import Concur.Replica.DOM.Props (Props)
 import Data.Aeson (FromJSON)
 import Network.Wai.Handler.Replica as Replica
+    ( Context(call, registerCallback) )
 import Relude hiding (div)
 import Replica.VDOM.Types qualified as Types
 import Control.Concurrent.STM qualified as STM
@@ -16,7 +17,7 @@ newtype Widget a = Widget (ReaderT Env (Core.Widget Types.HTML) a)
   
 data Env = Env
   { envContext :: Context
-  , envRoute :: STM.TChan Text
+  , envRoutingChannel :: STM.TChan Text
   }
 
 new :: Core.Widget Types.HTML a -> Widget a

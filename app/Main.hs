@@ -16,4 +16,3 @@ widget path = do
     [ div [] [ Router.link "Blog", Router.link "About" ] 
     , div [] [ text "Welcome to ", text path ]
     ]
-  widget path
