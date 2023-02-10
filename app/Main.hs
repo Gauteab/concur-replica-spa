@@ -2,8 +2,9 @@ module Main (main) where
 
 -- import Concur.Replica.DOM.Events (onClick)
 import Concur.Replica.Spa qualified as Spa
+import Concur.Replica.Spa.Html
 import Concur.Replica.Spa.Router qualified as Router
-import Concur.Replica.Spa.Widget
+import Concur.Replica.Spa.Widget (Widget)
 import Relude hiding (div)
 
 main :: IO ()

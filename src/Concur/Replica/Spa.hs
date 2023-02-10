@@ -4,10 +4,8 @@ module Concur.Replica.Spa (start) where
 
 import Concur.Replica qualified
 import Concur.Replica.Spa.Widget
-import Control.Concurrent.STM (atomically)
 import Control.Concurrent.STM.TChan
 import Network.Wai qualified
-import Network.Wai.Handler.Replica as Replica
 import Network.Wai.Middleware.Static qualified
 import Network.WebSockets qualified as WebSockets
 import Relude hiding (div)
@@ -23,18 +21,9 @@ start widget = do
     WebSockets.defaultConnectionOptions
     static
     $ \ctx -> do
-      chan <- liftIO $ newHistoryChan ctx
+      chan <- liftIO newTChanIO
       let env = Env ctx chan
       runWidget env widget
-
-newHistoryChan :: Replica.Context -> IO (TChan Text)
-newHistoryChan ctx = do
-  chan <- newTChanIO
-  cb <- Replica.registerCallback ctx $ \(path :: Text) -> do
-    putStrLn $ toString ("-> " <> path)
-    Control.Concurrent.STM.atomically (writeTChan chan path)
-  Replica.call ctx cb "window.onpopstate = function(event) { callCallback(arg, location.pathname); };"
-  pure chan
 
 -- | Declare static resources like stylesheets
 static :: Network.Wai.Middleware

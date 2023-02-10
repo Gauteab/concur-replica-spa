@@ -26,6 +26,8 @@ source-repository head
 library
   exposed-modules:
       Concur.Replica.Spa
+      Concur.Replica.Spa.Html
+      Concur.Replica.Spa.JS
       Concur.Replica.Spa.Router
       Concur.Replica.Spa.Widget
   other-modules:
