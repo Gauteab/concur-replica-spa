@@ -50,7 +50,7 @@ library
     , relude
     , replica
     , stm
-    , time
+    , unix-time
     , wai
     , wai-middleware-static
     , websockets
@@ -76,7 +76,7 @@ executable concur-replica-spa-exe
     , relude
     , replica
     , stm
-    , time
+    , unix-time
     , wai
     , wai-middleware-static
     , websockets
@@ -105,7 +105,7 @@ test-suite concur-replica-spa-test
     , relude
     , replica
     , stm
-    , time
+    , unix-time
     , wai
     , wai-middleware-static
     , websockets

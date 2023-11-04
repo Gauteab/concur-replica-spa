@@ -19,6 +19,10 @@ text = Widget.new . DOM.text
 nothing :: Widget a
 nothing = text ""
 
+maybeWidget :: (t -> Widget a) -> Maybe t -> Widget a
+maybeWidget _ Nothing = text ""
+maybeWidget f (Just x) = f x
+
 div :: [Props a] -> [Widget a] -> Widget a
 div = node "div"
 

@@ -1,8 +1,19 @@
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 a {
-  margin-right: 5px;
+    margin-right: 5px;
+}
+
+body {
+    padding: 5px;
+}
+
+.exercise {
+    width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
 }

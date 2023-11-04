@@ -9,7 +9,8 @@ import Concur.Replica.Spa qualified as Spa
 import Concur.Replica.Spa.Html
 import Concur.Replica.Spa.Router qualified as Router
 import Concur.Replica.Spa.Widget (Widget)
-import Data.Time qualified as Time
+import Control.Concurrent (threadDelay)
+import Data.UnixTime qualified as Time
 import Relude hiding (div)
 
 start :: IO ()
@@ -25,34 +26,34 @@ exerciseList =
 widget :: [Exercise] -> Text -> Widget a
 widget exercises path = do
   let exercisesSorted = sortOn (Down . timestamp) exercises
-  action <- div [] (fmap exerciseWidget exercisesSorted)
-  newExercises <- case action of
-    LogExercise e -> do
-      timeLogged <- liftIO Time.getCurrentTime
-      pure $ exercises <&> (\e' -> (if name e' == name e then (e {timestamp = Just timeLogged}) else e'))
+  e <- div [] (exerciseWidget <$> exercisesSorted)
+  let newExercises = e : (exercises & filter (\e' -> name e /= name e'))
   widget newExercises path
 
 data Exercise = Exercise
   { name :: Text,
-    timestamp :: Maybe Time.UTCTime
+    timestamp :: Maybe Time.UnixTime
   }
   deriving (Eq, Show)
-
-data Action = LogExercise Exercise
 
 newExercise :: Text -> Exercise
 newExercise name = Exercise {name = name, timestamp = Nothing}
 
-exerciseWidget :: Exercise -> Widget Action
+exerciseWidget :: Exercise -> Widget Exercise
 exerciseWidget e = do
   _ <-
     div
-      [className "excercise"]
-      [ text (name e),
-        text (show (timestamp e)),
+      [className "exercise"]
+      [ text e.name,
+        div [] [e.timestamp & maybeWidget viewTimestamp],
         button [onClick] [text "Log"]
       ]
-  pure (LogExercise e)
+  timeLogged <- liftIO Time.getUnixTime
+  pure (e {timestamp = Just timeLogged})
 
--- timeLogged <- liftIO Time.getCurrentTime
--- pure (e {timestamp = Just timeLogged})
+viewTimestamp :: Time.UnixTime -> Widget a
+viewTimestamp timestamp = do
+  current <- liftIO Time.getUnixTime
+  let diff = Time.diffUnixTime current timestamp
+  _ <- text (show diff) <|> liftIO (threadDelay 1000000)
+  viewTimestamp timestamp

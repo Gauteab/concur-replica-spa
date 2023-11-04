@@ -33,7 +33,7 @@ dependencies:
   - websockets
   - wreq
   - aeson
-  - time
+  - unix-time
 
 default-extensions:
   - NoImplicitPrelude
