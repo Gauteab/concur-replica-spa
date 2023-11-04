@@ -33,12 +33,13 @@ dependencies:
   - websockets
   - wreq
   - aeson
+  - time
 
 default-extensions:
   - NoImplicitPrelude
   - OverloadedStrings
   - OverloadedRecordDot
-  - OverloadedRecordUpdate
+  # - OverloadedRecordUpdate
 
 ghc-options:
   - -Wall
