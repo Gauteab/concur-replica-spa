@@ -12,6 +12,7 @@ import Concur.Replica.Spa.Widget (Widget)
 import Control.Concurrent (threadDelay)
 import Data.UnixTime qualified as Time
 import Relude hiding (div)
+import Relude qualified as Relude
 
 start :: IO ()
 start = do
@@ -52,8 +53,12 @@ exerciseWidget e = do
   pure (e {timestamp = Just timeLogged})
 
 viewTimestamp :: Time.UnixTime -> Widget a
-viewTimestamp timestamp = do
+viewTimestamp timestamp = forever $ do
   current <- liftIO Time.getUnixTime
   let diff = Time.diffUnixTime current timestamp
-  _ <- text (show diff) <|> liftIO (threadDelay 1000000)
-  viewTimestamp timestamp
+      seconds = diff.udtMicroSeconds `Relude.div` 1000
+      (days, secondsWithoutDays) = seconds `divMod` 86400
+      (hours, secondsWithoutHours) = secondsWithoutDays `divMod` 3600
+      (minutes, remainingSeconds) = secondsWithoutHours `divMod` 60
+      timeString = show days <> ":" <> show hours <> ":" <> show minutes <> ":" <> show remainingSeconds
+  text timeString <|> liftIO (threadDelay 1000000)
