@@ -2,10 +2,12 @@
 
 module Concur.Replica.Spa.Html where
 
+import Concur.Replica (className)
 import Concur.Replica.DOM qualified as DOM
 import Concur.Replica.DOM.Props (Props, key)
 import Concur.Replica.Spa.Widget (Widget)
 import Concur.Replica.Spa.Widget qualified as Widget
+import Data.Text qualified as Text
 import Relude hiding (div)
 
 node :: Text -> [Props a] -> [Widget a] -> Widget a
@@ -22,6 +24,9 @@ nothing = text ""
 maybeWidget :: (t -> Widget a) -> Maybe t -> Widget a
 maybeWidget _ Nothing = text ""
 maybeWidget f (Just x) = f x
+
+classNames :: [(Text, Bool)] -> Props a
+classNames = filter snd >>> map fst >>> Text.intercalate " " >>> className
 
 div :: [Props a] -> [Widget a] -> Widget a
 div = node "div"

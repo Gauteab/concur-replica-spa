@@ -1,6 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Concur.Replica.Spa.Widget (Env (..), Widget, runWidget, useReplicaContext, new, useRoutingChannel) where
+module Concur.Replica.Spa.Widget (Env (..), Widget, View, runWidget, useReplicaContext, new, useRoutingChannel) where
 
 import Concur.Core qualified as Core
 import Control.Concurrent.STM qualified as STM
@@ -10,6 +10,8 @@ import Replica.VDOM.Types qualified as Types
 
 newtype Widget a = Widget (ReaderT Env (Core.Widget Types.HTML) a)
   deriving (Functor, Applicative, Monad, MonadIO, MonadReader Env, Alternative)
+
+type View = forall a. Widget a -> Widget a
 
 data Env = Env
   { envContext :: Replica.Context,

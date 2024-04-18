@@ -17,3 +17,11 @@ body {
     border: 1px solid #ccc;
     margin-bottom: 10px;
 }
+
+.exercise-green {
+    background: #e1ffe1;
+}
+
+.exercise-red {
+    background: #ffe1e1;
+}
